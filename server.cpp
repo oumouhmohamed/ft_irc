@@ -200,7 +200,7 @@ bool Server::accept_new_client()
 void Server::deconnect_client(size_t indice)
 {
 	int fd = poll_fds[indice].fd;
- 
+	supp_from_all_channels(fd);
 	std::cout << "Client deconnecte fd : " << fd  << std::endl;
 	clients.erase(fd);
 	close(fd);

@@ -74,6 +74,8 @@ void Server::handl_join(int fd, const Message &msg)
 		return;
 
 	channel.add_member(fd);
+	if (channel.get_members().size() == 1)   // premier membre = créateur
+    	channel.add_operator(fd);
 
 	std::string join_line = ":" + client_prefix(fd) + " JOIN " + channel_name + "\r\n";
 	diffusion_msg_to_channel(channel, -1, join_line);
@@ -120,7 +122,7 @@ void Server::handl_part(int fd, const Message &msg)
 	std::string partLine = ":" + client_prefix(fd) + " PART " + channel_name + "\r\n";
 	diffusion_msg_to_channel(*channel, -1, partLine);
 
-	channel->retirer_member(fd);
+	channel->retirer_client(fd);
 
 	if (channel->is_empty())
 		channels.erase(channel_name);
@@ -187,7 +189,7 @@ void Server::supp_from_all_channels(int fd)
 		{
 			std::string partLine = ":" + client_prefix(fd) + " PART " + it->first + "\r\n";
 			diffusion_msg_to_channel(it->second, fd, partLine);
-			it->second.retirer_member(fd);
+			it->second.retirer_client(fd);
 		}
 
 		if (it->second.is_empty())

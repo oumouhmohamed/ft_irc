@@ -37,6 +37,8 @@ void Server::send_numeric_reply(int fd, int code, const std::string &target,
 
 void Server::process_command(int fd, const Message &msg)
 {
+	if (msg.command.empty())
+        return;
 	if (msg.command == "PASS")
 		handl_pass(fd, msg);
 	else if (msg.command == "NICK")
@@ -49,7 +51,7 @@ void Server::process_command(int fd, const Message &msg)
 		handl_part(fd, msg);
 	else if (msg.command == "PRIVMSG")
 		handl_privmsg(fd, msg);
-		else if (msg.command == "KICK")
+	else if (msg.command == "KICK")
 		handl_kick(fd, msg);
 	else if (msg.command == "INVITE")
 		handl_invit(fd, msg);

@@ -35,6 +35,8 @@ class Channel
 		bool is_invited(int fd) const;
 		void retirer_invite(int fd);
  
+		// channel.hpp  (dans la partie public)
+		void retirer_client(int fd);
 		const std::string &get_topic() const;
 		void               set_topic(const std::string &topic);
 

@@ -68,8 +68,7 @@ void Server::handl_kick(int fd, const Message &msg)
 			+ " " + target_nick + " :" + reason + "\r\n";
 	diffusion_msg_to_channel(*channel, -1, kickLine);
 
-	channel->retirer_member(targetFd);
-	channel->retirer_operator(targetFd);
+	channel->retirer_client(targetFd);
 
 	if (channel->is_empty())
 		channels.erase(channel_name);

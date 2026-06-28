@@ -119,3 +119,11 @@ void Channel::set_topic(const std::string &t)
 {
 	topic = t;
 }
+
+// channel.cpp
+void Channel::retirer_client(int fd)
+{
+	retirer_member(fd);
+	retirer_operator(fd);
+	retirer_invite(fd);
+}
