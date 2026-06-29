@@ -24,10 +24,6 @@ std::string Server::format_code(int code) const
 	return (result);
 }
 
-/*
-    Construit et envoie une reponse numerique IRC standard, au format :
-    ":<nom-serveur> <code> <cible> <texte>\r\n"
-*/
 void Server::send_numeric_reply(int fd, int code, const std::string &target,
 		const std::string &text)
 {

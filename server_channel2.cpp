@@ -1,15 +1,6 @@
 #include "server.hpp"
 
 /*
-** ServerChannelOps.cpp regroupe les commandes reservees (ou liees)
-** aux operateurs de canal : KICK, INVITE, TOPIC.
-**
-** Separe de ServerChannel.cpp (qui garde JOIN/PART/PRIVMSG et les
-** fonctions utilitaires comme findChannel/diffusion_msg_to_channel) pour
-** que chaque fichier reste de taille raisonnable.
-*/
-
-/*
 ** KICK <channel> <pseudo> [raison] : seul un operateur du canal
 ** peut ejecter un membre. Le message KICK est diffuse a TOUT le
 ** monde, y compris la victime (-1 = personne n'est exclu) : c'est
