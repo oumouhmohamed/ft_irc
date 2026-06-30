@@ -1,10 +1,9 @@
 #include "server.hpp"
 
 /*
-** KICK <channel> <pseudo> [raison] : seul un operateur du canal
-** peut ejecter un membre. Le message KICK est diffuse a TOUT le
-** monde, y compris la victime (-1 = personne n'est exclu) : c'est
-** ainsi qu'elle apprend qu'elle vient d'etre ejectee.
+ KICK <channel> <pseudo> [raison] : seul un operateur du canal
+ peut ejecter un membre. Le message KICK est diffuse a TOUT le
+ monde, y compris la victime (-1 = personne n'est exclu)
 */
 void Server::handl_kick(int fd, const Message &msg)
 {

@@ -115,7 +115,7 @@ bool Server::config_socket()
  
 	if (fcntl(fd_serv, F_SETFL, O_NONBLOCK) == -1)
 	{
-		std::cerr << "Erreur : socket() a echoue" << std::endl;
+		std::cerr << "Erreur : fcntl() a echoue" << std::endl;
 		close(fd_serv);
 		fd_serv = -1;
 		return (false);
