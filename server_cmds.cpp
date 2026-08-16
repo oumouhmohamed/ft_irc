@@ -53,6 +53,8 @@ void Server::process_command(int fd, const Message &msg)
 		handl_invit(fd, msg);
 	else if (msg.command == "TOPIC")
 		handl_topic(fd, msg);
+	else if (msg.command == "MODE")
+		handl_Mode(fd, msg);
 	else if (!clients[fd].is_registered())
 		send_numeric_reply(fd, 451, "*", ":You have not registered");
 	else

@@ -2,6 +2,7 @@
 # define SERVER_HPP
 
 # include <string>
+#include<iostream>
 # include <vector>
 # include <poll.h>
 # include <map>
@@ -72,6 +73,7 @@ class Server
         void handl_kick(int fd, const Message &msg);
 		void handl_invit(int fd, const Message &msg);
 		void handl_topic(int fd, const Message &msg);
+		void handl_Mode(int fd, const Message &msg);
 };
 
 #endif
