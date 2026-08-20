@@ -64,7 +64,28 @@ void Server::handl_join(int fd, const Message &msg)
 		send_numeric_reply(fd, 403, clients[fd].get_nick(), channel_name + " :No such channel");
 		return;
 	}
-
+	Channel *existing = find_channel(channel_name);
+	if (existing)
+	{
+		if (existing->is_invite_only() && !existing->is_invited(fd))
+		{
+			send_numeric_reply(fd, 473, clients[fd].get_nick(), channel_name + " :Cannot join channel (+i)");
+			return;
+		}
+		if (existing->has_channel_key())
+		{
+			if (msg.params.size() < 2 || msg.params[1] != existing->get_key())
+			{
+				send_numeric_reply(fd, 475, clients[fd].get_nick(), channel_name + " :Cannot join channel (+k)");
+				return;
+			}
+		}
+		if (existing->has_user_limit() && existing->get_members().size() >= static_cast<size_t>(existing->get_user_limit()))
+		{
+			send_numeric_reply(fd, 471, clients[fd].get_nick(), channel_name + " :Cannot join channel (+l)");
+			return;
+		}
+	}
 	if (channels.find(channel_name) == channels.end())
 		channels[channel_name] = Channel(channel_name);
 

@@ -157,7 +157,3 @@ void Server::handl_user(int fd, const Message &msg)
 	clients[fd].set_user(msg.params[0]);
 	try_register(fd);
 }
-
-
-
-

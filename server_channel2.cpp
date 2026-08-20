@@ -184,38 +184,3 @@ void Server::handl_topic(int fd, const Message &msg)
 	diffusion_msg_to_channel(*channel, -1, topic_line);
 }
 
-bool mode_key(std::string msg)
-{
-	if (msg == "+i" || msg == "-i" || msg == "+t" || msg == "-t" || msg == "+k" || msg == "-k" || msg == "+o" || msg == "-o" || msg == "+l" || msg == "-l")
-		return true;
-	return false;
-}
-
-void Server::handl_Mode(int fd, const Message &msg)
-{
-	if (!clients[fd].is_registered())
-	{
-		send_numeric_reply(fd, 451, "*", ":You have not registered");
-		return;
-	}
-	if (msg.params.empty())
-	{
-		send_numeric_reply(fd, 461, clients[fd].get_nick(), "MODE :Not enough parameters");
-		return;
-	}
-	Channel *channel = find_channel(msg.params[0]);
-	if (!channel)
-	{
-		send_numeric_reply(fd, 403, clients[fd].get_nick(), ":No such channel");
-		return;
-	}
-	if (!channel->is_member(fd))
-	{
-		send_numeric_reply(fd, 482, clients[fd].get_nick(), ":You're not channel operator");
-		return;
-	}
-	if (!mode_key(msg.params[1]))
-	{
-		send_numeric_reply(fd, 472, clients[fd].get_nick(), ":is unknown mode char to me");
-	}
-}

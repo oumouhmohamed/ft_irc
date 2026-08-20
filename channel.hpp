@@ -13,7 +13,12 @@ class Channel
 		std::vector<int>  invited;
 		std::string       topic;
 
-    
+		bool			invite_only;
+		bool			topic_restricted;
+		bool			has_key;
+		std::string		key;
+		bool			has_limit;
+		int				user_limit;
     public:
 		Channel();
 		Channel(const std::string &name);
@@ -39,6 +44,22 @@ class Channel
 		const std::string &get_topic() const;
 		void               set_topic(const std::string &topic);
 
+    bool               is_invite_only() const;
+    void               set_invite_only(bool on);
+
+    bool               is_topic_restricted() const;
+    void               set_topic_restricted(bool on);
+
+    bool               has_channel_key() const;
+    const std::string &get_key() const;
+    void               set_key(const std::string &k);
+    void               unset_key();
+
+    bool               has_user_limit() const;
+    int                get_user_limit() const;
+    void               set_user_limit(int l);
+    void               unset_user_limit();
+	std::string        get_mode_string() const;
 };
 
 #endif

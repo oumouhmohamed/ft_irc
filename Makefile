@@ -2,7 +2,7 @@ CPP = c++
 
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC = main.cpp channel.cpp client.cpp parsing.cpp server.cpp server_channel2.cpp server_cmds.cpp server_cmds_channel.cpp
+SRC = main.cpp channel.cpp client.cpp parsing.cpp server.cpp server_channel2.cpp server_cmds.cpp server_cmds_channel.cpp mode.cpp
 OBJ = $(SRC:.cpp=.o)
 
 NAME = ircserv
