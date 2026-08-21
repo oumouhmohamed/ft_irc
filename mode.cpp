@@ -38,7 +38,7 @@ std::string Server::ft_hep_mode(std::string modestr, Channel *channel, const Mes
 				if (arg_index >= msg.params.size())
 				{
 					send_numeric_reply(fd, 461, clients[fd].get_nick(), "MODE :Not enough parameters");
-					continue;
+					return NULL;
 				}
 				channel->set_key(msg.params[arg_index]);
 				change_args.push_back(msg.params[arg_index]);
@@ -53,7 +53,7 @@ std::string Server::ft_hep_mode(std::string modestr, Channel *channel, const Mes
 			if (arg_index >= msg.params.size())
 			{
 				send_numeric_reply(fd, 461, clients[fd].get_nick(), "MODE :Not enough parameters");
-				continue;
+				return NULL;
 			}
 			const std::string &target_nick = msg.params[arg_index];
 			int target_fd = find_client_fd_by_nickname(target_nick);
@@ -63,7 +63,7 @@ std::string Server::ft_hep_mode(std::string modestr, Channel *channel, const Mes
 			{
 				send_numeric_reply(fd, 441, clients[fd].get_nick(),
 						target_nick + " " + channel_name + " :They aren't on that channel");
-				continue;
+				return NULL;
 			}
 			if (sign == '+')
 				channel->add_operator(target_fd);
@@ -80,7 +80,7 @@ std::string Server::ft_hep_mode(std::string modestr, Channel *channel, const Mes
 				if (arg_index >= msg.params.size())
 				{
 					send_numeric_reply(fd, 461, clients[fd].get_nick(), "MODE :Not enough parameters");
-					continue;
+					return NULL;
 				}
 
 				long limit = std::strtol(msg.params[arg_index].c_str(), NULL, 10);
@@ -100,7 +100,7 @@ std::string Server::ft_hep_mode(std::string modestr, Channel *channel, const Mes
 			std::string unknown(1, c);
 			send_numeric_reply(fd, 472, clients[fd].get_nick(),
 					unknown + " :is unknown mode char to me");
-			continue;
+			NULL;
 		}
 
 		if (applied)
@@ -115,7 +115,7 @@ std::string Server::ft_hep_mode(std::string modestr, Channel *channel, const Mes
 	}
 
 	if (change.empty())
-		return "";
+		return NULL;
 	std::string mode_line = ":" + client_prefix(fd) + " MODE " + channel_name + " " + change;
 	for (size_t i = 0; i < change_args.size(); i++)
 		mode_line += " " + change_args[i];
@@ -171,6 +171,6 @@ void Server::handl_Mode(int fd, const Message &msg)
 
 	const std::string &modestr = msg.params[1];
 	std::string mode_line = ft_hep_mode(modestr, channel, msg, fd, channel_name);
-	if (mode_line != "")
+	if (mode_line.c_str() != NULL)
 		diffusion_msg_to_channel(*channel, -1, mode_line);
 }
