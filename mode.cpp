@@ -6,8 +6,8 @@ std::string Server::ft_help_mode(std::string modestr, Channel *channel, const Me
 	size_t arg_index = 2;
 	char   sign = '+';
 	char   last_sign_written = 0;
-	std::string change;
-	std::vector<std::string> change_args;
+	std::string change_channel_mode;
+	std::vector<std::string> change_args_mode;
 
 	for (size_t i = 0; i < modestr.size(); i++)
 	{
@@ -23,12 +23,12 @@ std::string Server::ft_help_mode(std::string modestr, Channel *channel, const Me
 
 		if (c == 'i')
 		{
-			channel->set_invite_only(sign == '+');
+				channel->set_invite_only(sign == '+');
 			applied = true;
 		}
 		else if (c == 't')
 		{
-			channel->set_topic_restricted(sign == '+');
+				channel->set_topic_restricted(sign == '+');
 			applied = true;
 		}
 		else if (c == 'k')
@@ -41,7 +41,7 @@ std::string Server::ft_help_mode(std::string modestr, Channel *channel, const Me
 					return "";
 				}
 				channel->set_key(msg.params[arg_index]);
-				change_args.push_back(msg.params[arg_index]);
+				change_args_mode.push_back(msg.params[arg_index]);
 				arg_index++;
 			}
 			else
@@ -70,7 +70,7 @@ std::string Server::ft_help_mode(std::string modestr, Channel *channel, const Me
 			else
 				channel->retirer_operator(target_fd);
 
-			change_args.push_back(target_nick);
+			change_args_mode.push_back(target_nick);
 			applied = true;
 		}
 		else if (c == 'l')
@@ -89,7 +89,7 @@ std::string Server::ft_help_mode(std::string modestr, Channel *channel, const Me
 					continue;
 
 				channel->set_user_limit(static_cast<int>(limit));
-				change_args.push_back(msg.params[arg_index - 1]);
+				change_args_mode.push_back(msg.params[arg_index - 1]);
 			}
 			else
 				channel->unset_user_limit();
@@ -107,18 +107,20 @@ std::string Server::ft_help_mode(std::string modestr, Channel *channel, const Me
 		{
 			if (sign != last_sign_written)
 			{
-				change += sign;
+				change_channel_mode += sign;
 				last_sign_written = sign;
 			}
-			change += c;
+			change_channel_mode += c;
 		}
 	}
 
-	if (change.empty())
+	if (change_channel_mode.empty())
 		return "";
-	std::string mode_line = ":" + client_prefix(fd) + " MODE " + channel_name + " " + change;
-	for (size_t i = 0; i < change_args.size(); i++)
-		mode_line += " " + change_args[i];
+	std::string mode_line = ":" + client_prefix(fd) + " MODE " + channel_name + " " + change_channel_mode;
+	for (size_t i = 0; i < change_args_mode.size(); i++)
+	{
+		mode_line += " " + change_args_mode[i];
+	}
 	mode_line += "\r\n";
 	return mode_line;
 }
