@@ -273,16 +273,6 @@ void Server::run_serv()
 			std::cerr << "Erreur: poll() echoue" << std::endl;
 			break;
 		}
-	}
-	while (true)
-	{
-		int ret = poll(&poll_fds[0], poll_fds.size(), -1);
-		if (ret == -1)
-		{
-			std::cerr << "Erreur: poll() echoue" << std::endl;
-			break;
-		}
- 
 		size_t i = 0;
 		while (i < poll_fds.size())
 		{
