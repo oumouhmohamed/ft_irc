@@ -158,8 +158,6 @@ void Server::handl_Mode(int fd, const Message &msg)
 	if (msg.params.size() < 2)
 	{
 		std::string modes = channel->get_mode_string();
-		if (modes.empty())
-			modes = "+";
 		send_numeric_reply(fd, 324, clients[fd].get_nick(), channel_name + " " + modes);
 		return;
 	}
