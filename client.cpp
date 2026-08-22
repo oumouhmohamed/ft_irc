@@ -6,6 +6,27 @@ Client::Client() :
 {
 }
 
+Client::Client(const Client &other) :
+	fd_client(other.fd_client), buffer(other.buffer), outp_Buffer(other.outp_Buffer),
+	pass(other.pass), nick(other.nick), user(other.user), registered(other.registered)
+{
+}
+
+Client &Client::operator=(const Client &other)
+{
+	if (this != &other)
+	{
+		fd_client = other.fd_client;
+		buffer = other.buffer;
+		outp_Buffer = other.outp_Buffer;
+		pass = other.pass;
+		nick = other.nick;
+		user = other.user;
+		registered = other.registered;
+	}
+	return *this;
+}
+
 Client::Client(int fd) :
 	fd_client(fd), buffer(""), outp_Buffer(""), pass(false),
 	nick(""), user(""), registered(false)

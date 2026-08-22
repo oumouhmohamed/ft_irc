@@ -10,8 +10,26 @@
 #include <cstdlib>
 extern bool sig_stp;
 
-Server::Server() : port(0), key_serv(""), fd_serv(-1)
+Server::Server() : port(0), key_serv(""), fd_serv(-1), poll_fds(), clients(), channels()
 {
+}
+
+Server::Server(const Server &other) : port(other.port), key_serv(other.key_serv), fd_serv(other.fd_serv), poll_fds(other.poll_fds), clients(other.clients), channels(other.channels)
+{
+}
+
+Server &Server::operator=(const Server &other)
+{
+	if (this != &other)
+	{
+		port = other.port;
+		key_serv = other.key_serv;
+		fd_serv = other.fd_serv;
+		poll_fds = other.poll_fds;
+		clients = other.clients;
+		channels = other.channels;
+	}
+	return *this;
 }
 
 Server::~Server()

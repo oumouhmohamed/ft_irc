@@ -1,12 +1,38 @@
 #include "channel.hpp"
 
-Channel::Channel() : name(""), invite_only(false), topic_restricted(false),
+Channel::Channel() : name(""), members(), operators(), invited(), topic(""), invite_only(false), topic_restricted(false),
 	has_key(false), key(""), has_limit(false), user_limit(0)
 {}
-Channel::Channel(const std::string &name) : name(name), invite_only(false),
-	topic_restricted(false), has_key(false), key(""), has_limit(false),
-	user_limit(0)
+Channel::Channel(const std::string &name) : name(name), members(), operators(), invited(), topic(""), invite_only(false), topic_restricted(false),
+	has_key(false), key(""), has_limit(false), user_limit(0)
 {
+}
+
+Channel::Channel(const Channel &other) : name(other.name), members(other.members),
+	operators(other.operators), invited(other.invited), topic(other.topic),
+	invite_only(other.invite_only), topic_restricted(other.topic_restricted),
+	has_key(other.has_key), key(other.key), has_limit(other.has_limit),
+	user_limit(other.user_limit)
+{
+}
+
+Channel &Channel::operator=(const Channel &other)
+{
+	if (this != &other)
+	{
+		name = other.name;
+		members = other.members;
+		operators = other.operators;
+		invited = other.invited;
+		topic = other.topic;
+		invite_only = other.invite_only;
+		topic_restricted = other.topic_restricted;
+		has_key = other.has_key;
+		key = other.key;
+		has_limit = other.has_limit;
+		user_limit = other.user_limit;
+	}
+	return *this;
 }
 
 Channel::~Channel()
