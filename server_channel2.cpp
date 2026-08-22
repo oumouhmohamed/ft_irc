@@ -168,7 +168,6 @@ void Server::handl_topic(int fd, const Message &msg)
 				channel_name + " :You're not on that channel");
 		return;
 	}
-
 	if (msg.params.size() < 2)
 	{
 		if (channel->get_topic().empty())
@@ -177,7 +176,12 @@ void Server::handl_topic(int fd, const Message &msg)
 			send_numeric_reply(fd, 332, clients[fd].get_nick(), channel_name + " :" + channel->get_topic());
 		return;
 	}
-
+	if (channel->is_topic_restricted() && !channel->is_operator(fd))
+	{
+		send_numeric_reply(fd, 482, clients[fd].get_nick(),
+				channel_name + " :You're not channel operator");
+		return;
+	}	
 	channel->set_topic(msg.params[1]);
 
 	std::string topic_line = ":" + client_prefix(fd) + " TOPIC " + channel_name + " :" + msg.params[1] + "\r\n";

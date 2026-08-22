@@ -1,5 +1,6 @@
 #include "server.hpp"
 #include <iostream>
+#include <cerrno>
 #include <cstring>
 #include <unistd.h>
 #include <fcntl.h>
@@ -7,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <cstdlib>
-
+extern bool sig_stp;
 
 Server::Server() : port(0), key_serv(""), fd_serv(-1)
 {
@@ -262,6 +263,17 @@ bool Server::send_repons_to_client(size_t index)
  
 void Server::run_serv()
 {
+	while (!sig_stp)
+	{
+		int ret = poll(&poll_fds[0], poll_fds.size(), -1);
+		if (ret == -1)
+		{
+			if (errno == EINTR)
+				break;
+			std::cerr << "Erreur: poll() echoue" << std::endl;
+			break;
+		}
+	}
 	while (true)
 	{
 		int ret = poll(&poll_fds[0], poll_fds.size(), -1);

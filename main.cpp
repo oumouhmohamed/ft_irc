@@ -1,9 +1,18 @@
 #include "server.hpp"
 #include <iostream>
+#include <csignal>
 #include <unistd.h>
+bool sig_stp = 0;
 
+void handle_signal(int sig)
+{
+	(void)sig;
+	sig_stp = 1;
+}
 int main(int argc, char **argv)
 {
+	signal(SIGPIPE, SIG_IGN);
+    signal(SIGINT, handle_signal);
 	if (argc != 3)
 	{
 		std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;

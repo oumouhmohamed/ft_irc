@@ -74,7 +74,7 @@ class Server
 		void handl_invit(int fd, const Message &msg);
 		void handl_topic(int fd, const Message &msg);
 		void handl_Mode(int fd, const Message &msg);
-		std::string ft_hep_mode(std::string modestr, Channel *channel, const Message msg,int fd, std::string channel_name);
+		std::string ft_help_mode(std::string modestr, Channel *channel, const Message msg,int fd, std::string channel_name);
 	};
 
 #endif
