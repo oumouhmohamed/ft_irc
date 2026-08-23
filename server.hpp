@@ -62,6 +62,7 @@ class Server
         void     handl_join(int fd, const Message &msg);
 		void     handl_part(int fd, const Message &msg);
 		void     handl_privmsg(int fd, const Message &msg);
+		
 		Channel *find_channel(const std::string &name);
 		int      find_client_fd_by_nickname(const std::string &nick) const;
 		void     diffusion_msg_to_channel(const Channel &channel, int exclude_fd,

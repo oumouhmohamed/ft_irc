@@ -32,12 +32,5 @@ int main(int argc, char **argv)
 	    return (1);
 
     server.run_serv();
-    
-    /*
-        g++ -Wall -Wextra -Werror -std=c++98 main.cpp Server.cpp -o ircserv
-        ./ircserv 6667 monmotdepasse
-        nc -zv 127.0.0.1 6667
-    */
-
 	return (0);
 }

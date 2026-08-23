@@ -231,9 +231,6 @@ bool Server::lire_depuis_client(size_t indice)
 	int fd = poll_fds[indice].fd;
 	char buffer[1024];
 	ssize_t bytes = recv(fd, buffer, sizeof(buffer), 0);
- 
-	// bytes == 0  -> le client a ferme la connexion (EOF)
-	// bytes == -1 -> erreur reseau reelle
 	if (bytes <= 0)
 	{
 		deconnect_client(indice);
@@ -302,8 +299,6 @@ void Server::run_serv()
 				continue;
 			}
  
-			// Le client s'est deconnecte (ou erreur) : on ferme et on
-			// retire son fd du tableau surveille par poll(). Sans ca,
 			if (poll_fds[i].revents & (POLLHUP | POLLERR))
 			{
 				deconnect_client(i);
@@ -316,7 +311,6 @@ void Server::run_serv()
 					continue;
 			}
 
-			// si fd est pret en ecriture.
 			if (poll_fds[i].revents & POLLOUT)
 			{
 				if (!send_repons_to_client(i))

@@ -1,10 +1,5 @@
 #include "server.hpp"
 
-/*
- KICK <channel> <pseudo> [raison] : seul un operateur du canal
- peut ejecter un membre. Le message KICK est diffuse a TOUT le
- monde, y compris la victime (-1 = personne n'est exclu)
-*/
 void Server::handl_kick(int fd, const Message &msg)
 {
 	if (!clients[fd].is_registered())
@@ -64,12 +59,6 @@ void Server::handl_kick(int fd, const Message &msg)
 		channels.erase(channel_name);
 }
 
-/*
-** INVITE <pseudo> <channel> : seul un operateur peut inviter.
-** Pour l'instant, ca se contente de prevenir le pseudo vise et de
-** memoriser l'invitation dans le canal (utile a l'etape 9, quand
-** le mode +i empechera de JOIN sans invitation prealable).
-*/
 void Server::handl_invit(int fd, const Message &msg)
 {
 	if (!clients[fd].is_registered())
@@ -132,13 +121,6 @@ void Server::handl_invit(int fd, const Message &msg)
 	send_numeric_reply(fd, 341, clients[fd].get_nick(), target_nick + " " + channel_name);
 }
 
-/*
-** TOPIC <channel> [nouveau sujet] : sans argument, affiche le sujet
-** actuel. Avec un argument, le modifie et previent tout le canal.
-** Pas de restriction aux operateurs pour l'instant : en IRC, c'est
-** seulement le mode +t (etape 9) qui impose cette restriction —
-** par defaut, n'importe quel membre peut changer le sujet.
-*/
 void Server::handl_topic(int fd, const Message &msg)
 {
 	if (!clients[fd].is_registered())
@@ -187,4 +169,3 @@ void Server::handl_topic(int fd, const Message &msg)
 	std::string topic_line = ":" + client_prefix(fd) + " TOPIC " + channel_name + " :" + msg.params[1] + "\r\n";
 	diffusion_msg_to_channel(*channel, -1, topic_line);
 }
-

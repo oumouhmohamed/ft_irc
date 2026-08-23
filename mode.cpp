@@ -174,3 +174,4 @@ void Server::handl_Mode(int fd, const Message &msg)
 	if (!mode_line.empty())
 		diffusion_msg_to_channel(*channel, -1, mode_line);
 }
+
